@@ -1,32 +1,52 @@
-name: Terraform Plan and Apply
+name: Terraform AWS Deployment
 
 on:
-  workflow_dispatch:
   push:
-    paths:
-      - '/**'
-  
     branches:
-      - main
-
-env:
- # verbosity setting for Terraform logs
- TF_LOG: INFO
- # Credentials for deployment to AWS
- AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
- AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - main  # Trigger on push to the 'main' branch
+  pull_request:
+    branches:
+      - main  # Trigger on PR to the 'main' branch
 
 jobs:
   terraform:
     runs-on: ubuntu-latest
+
     steps:
+    # Checkout the repository code
     - name: Checkout code
       uses: actions/checkout@v2
+
+    # Set up Terraform
     - name: Set up Terraform
-      uses: hashicorp/setup-terraform@v2
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: 1.5.0 # Replace with the version of Terraform you want to use
+
+    # Configure AWS Credentials using GitHub Secrets
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws_region: us-east-1  # Change to your desired AWS region
+
+    # Initialize Terraform
     - name: Terraform Init
       run: terraform init
+
+    # Validate the Terraform configuration
+    - name: Terraform Validate
+      run: terraform validate
+
+    # Plan Terraform deployment
     - name: Terraform Plan
       run: terraform plan
+
+    # Apply Terraform deployment (you can add -auto-approve to skip manual approval)
     - name: Terraform Apply
-      run: terraform apply -auto-approve
+      run: terraform apply -auto-approve
+
+    # Output AWS Resources (Optional, you can use this to view deployed resources)
+    - name: Output AWS Resources
+      run: terraform output
