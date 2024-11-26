@@ -23,7 +23,7 @@ jobs:
       with:
         terraform_version: 1.5.0 # Replace with the version of Terraform you want to use
 
-    # Configure AWS Credentials using GitHub Secrets
+    # Configure AWS Credentials using GitHub Secret
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
