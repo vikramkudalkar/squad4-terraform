@@ -175,7 +175,7 @@ resource "aws_iam_role_policy_attachment" "eks_CNI_policy" {
 
 # Create EKS Cluster
 resource "aws_eks_cluster" "my_cluster" {
-  name     = "-cluster"
+  name     = "cluster"
   role_arn = aws_iam_role.eks_cluster_role.arn
 
   vpc_config {
