@@ -117,8 +117,8 @@ resource "aws_dynamodb_table" "squad4-ddb" {
 
 
 # Create IAM role for EKS cluster (cluster's control plane)
-resource "aws_iam_role" "eks_cluster_role" {
-  name = "eks-cluster-role"
+resource "aws_iam_role" "squad4_cluster_role" {
+  name = "squad4-cluster-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -138,7 +138,7 @@ resource "aws_iam_role" "eks_cluster_role" {
 # Attach EKS Cluster policy to the IAM role
 resource "aws_iam_role_policy_attachment" "eks_cluster_policy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
-  role       = aws_iam_role.eks_cluster_role.name
+  role       = aws_iam_role.squad4_cluster_role.name
 }
 
 # Create IAM role for EKS worker nodes
