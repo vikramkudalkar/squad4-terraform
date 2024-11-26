@@ -100,8 +100,8 @@ resource "aws_security_group" "squad4_security_group" {
   }
 }
 
-resource "aws_s3_bucket" ""terraform-squad4-s3"" {
-  bucket = ""terraform-squad4-s3""
+resource "aws_s3_bucket" "terraform-squad4-s3" {
+  bucket = "terraform-squad4-s3"
 
 }
 
